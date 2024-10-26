@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 
 function TextForm(props) {
-  const [text, setText] = useState('Enter text here!!');
-  const [msgtext, setMsgText] = useState('');
+  const [text, setText] = useState('');
 
   const handleUpClick = () => {
     let newText = text.toUpperCase();
-    setMsgText(newText);
+    setText(newText);
+  };
+
+  const handleLowerClick = () => {
+    let newText = text.toLowerCase();
+    setText(newText);
+  };
+
+  const handleClearClick = () => {
+    let newText = '';
+    setText(newText);
   };
 
   const handleOnChange = (event) => {
@@ -15,27 +24,55 @@ function TextForm(props) {
 
   return (
     <>
-      <h1 className="text-2xl sm:text-3xl md:text-4xl text-center mt-8 text-black-500">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl text-center mt-8 text-gray-800">
         {props.heading}
       </h1>
+      
       <div className="flex justify-center mt-4">
         <textarea
-          className="w-full max-w-xl border border-black text-lg sm:text-xl px-4 py-2 rounded"
+          className="w-full max-w-xl border border-gray-300 text-lg sm:text-xl px-4 py-2 rounded focus:outline-none focus:border-blue-500"
           id="textarea"
           value={text}
           onChange={handleOnChange}
-          rows="8"
+          rows="4"
+          placeholder="Enter your text here..."
         ></textarea>
       </div>
-      <div className="msg mx-auto mt-4 w-full max-w-xl text-lg sm:text-xl break-words px-4 py-2 bg-gray-100 rounded">
-        {msgtext}
+      
+      <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 mt-5">
+        <button
+          className="text-white bg-blue-600 px-4 py-2 rounded text-sm sm:text-base hover:bg-blue-700 transition"
+          onClick={handleUpClick}
+        >
+          Convert To UpperCase
+        </button>
+        <button
+          className="text-white bg-blue-600 px-4 py-2 rounded text-sm sm:text-base hover:bg-blue-700 transition"
+          onClick={handleLowerClick}
+        >
+          Convert To LowerCase
+        </button>
+        <button
+          className="text-white bg-blue-600 px-4 py-2 rounded text-sm sm:text-base hover:bg-blue-700 transition"
+          onClick={handleClearClick}
+        >
+          Clear Text
+        </button>
       </div>
-      <button
-        className="block text-white bg-blue-700 mt-5 mx-auto p-2 rounded text-sm sm:text-base md:text-lg hover:bg-blue-800 transition"
-        onClick={handleUpClick}
-      >
-        Convert To UpperCase
-      </button>
+
+      <div className="container mx-auto mt-6 max-w-xl px-4">
+        <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Your Text Summary</h2>
+        <p className="text-lg sm:text-xl mt-2 text-gray-700 bg-gray-100 p-3 rounded">
+          {text.split(/\s+/).filter((word) => word.length !== 0).length} words and {text.length} characters
+        </p>
+        <p className="text-lg sm:text-xl mt-2 text-gray-700 bg-gray-100 p-3 rounded">
+          {0.008 * text.split(/\s+/).filter((word) => word.length !== 0).length} Minutes Read
+        </p>
+        <h3 className="text-lg sm:text-2xl font-semibold text-gray-800 mt-4">Preview</h3>
+        <p className="text-lg sm:text-xl mt-2 text-gray-700 bg-gray-100 p-3 rounded break-words">
+          {text.length > 0 ? text : "Nothing to preview!"}
+        </p>
+      </div>
     </>
   );
 }
